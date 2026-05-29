@@ -1,6 +1,7 @@
 import { Mail, ArrowRight, Check, Loader2 } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { contactInfo, socialLinks } from '@/data/portfolio';
 
 function AnimatedInput({ id, label, type = "text", required = false, isTextarea = false }: { id: string, label: string, type?: string, required?: boolean, isTextarea?: boolean }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -114,20 +115,20 @@ export function Contact() {
              <p className="text-white/80 mb-12 max-w-md text-lg leading-relaxed">Currently open for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
              
              <div className="space-y-8">
-               <a href="mailto:hello@rakeshkb.dev" className="flex items-center gap-6 group w-fit">
+               <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-6 group w-fit">
                  <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center bg-surface-bright/50 group-hover:border-primary group-hover:bg-primary/20 transition-all duration-300 shadow-[0_0_10px_rgba(173,198,255,0)] group-hover:shadow-[0_0_20px_rgba(173,198,255,0.4)] shrink-0">
                    <Mail className="text-white/70 group-hover:text-primary transition-colors" size={24} />
                  </div>
                  <div>
                    <p className="font-mono text-[10px] uppercase tracking-widest text-white/50 mb-1 font-bold">Email</p>
-                   <p className="text-white font-medium text-lg md:text-xl group-hover:text-primary transition-colors">hello@rakeshkb.dev</p>
+                   <p className="text-white font-medium text-lg md:text-xl group-hover:text-primary transition-colors">{contactInfo.email}</p>
                  </div>
                </a>
                
                <div className="flex flex-wrap gap-6 pt-4">
-                 <a href="#" className="font-mono text-[10px] uppercase tracking-widest text-white/70 hover:text-primary transition-colors underline decoration-white/30 underline-offset-8">LinkedIn</a>
-                 <a href="#" className="font-mono text-[10px] uppercase tracking-widest text-white/70 hover:text-primary transition-colors underline decoration-white/30 underline-offset-8">GitHub</a>
-                 <a href="#" className="font-mono text-[10px] uppercase tracking-widest text-white/70 hover:text-primary transition-colors underline decoration-white/30 underline-offset-8">Twitter</a>
+                 {socialLinks.filter((social) => social.label !== 'Email').map((social) => (
+                   <a key={social.label} href={social.href} className="font-mono text-[10px] uppercase tracking-widest text-white/70 hover:text-primary transition-colors underline decoration-white/30 underline-offset-8">{social.label}</a>
+                 ))}
                </div>
              </div>
            </div>

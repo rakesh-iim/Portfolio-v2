@@ -1,13 +1,14 @@
 import React from 'react';
 import { Github, Linkedin, Twitter, Mail } from 'lucide-react';
 import { motion } from 'motion/react';
+import { socialLinks } from '@/data/portfolio';
 
-const socialLinks = [
-  { icon: Github, href: '#', label: 'GitHub' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Mail, href: 'mailto:hello@example.com', label: 'Email' },
-];
+const socialIcons = {
+  GitHub: Github,
+  LinkedIn: Linkedin,
+  Twitter: Twitter,
+  Email: Mail,
+};
 
 export function SocialBar() {
   return (
@@ -16,7 +17,7 @@ export function SocialBar() {
       <div className="w-[1px] h-12 bg-gradient-to-b from-transparent to-white/20 mb-2"></div>
       
       {socialLinks.map((social, index) => {
-        const Icon = social.icon;
+        const Icon = socialIcons[social.label];
         return (
           <motion.a
             key={social.label}

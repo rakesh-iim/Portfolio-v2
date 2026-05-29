@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Brain } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { aboutStats, personalInfo } from '@/data/portfolio';
 
 function Counter({ target, duration = 2000 }: { target: number, duration?: number }) {
   const [count, setCount] = useState(0);
@@ -52,10 +53,10 @@ export function About() {
             <div className="glass-panel p-8 md:p-12 rounded-2xl relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               <p className="text-white/80 mb-6 leading-relaxed">
-                I am a passionate Software Engineer driven by a relentless pursuit of technical excellence and innovative problem-solving. My engineering mindset is rooted in building scalable, robust architectures that translate complex requirements into elegant, high-performance solutions.
+                {personalInfo.about[0]}
               </p>
               <p className="text-white/80 leading-relaxed">
-                With a focus on modern web technologies and a deep appreciation for "Apple-level" finish, I strive to bridge the gap between complex backend systems and seamless, intuitive user experiences. Every line of code is an opportunity to craft something enduring.
+                {personalInfo.about[1]}
               </p>
             </div>
           </div>
@@ -63,14 +64,14 @@ export function About() {
           <div className="lg:col-span-5 grid grid-cols-2 gap-4">
             <div className="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center bloom-hover min-h-[160px]">
                <span className="font-display text-5xl text-primary font-bold drop-shadow-[0_0_15px_rgba(173,198,255,0.6)] mb-2">
-                 <Counter target={5} />
+                 <Counter target={aboutStats.yearsExperience} />
                </span>
                <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/70 font-semibold">Years Exp.</span>
             </div>
 
             <div className="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center bloom-hover min-h-[160px] relative overflow-hidden">
                <span className="font-display text-5xl text-secondary font-bold drop-shadow-[0_0_15px_rgba(221,183,255,0.6)] mb-2 relative z-10">
-                 <Counter target={40} />
+                 <Counter target={aboutStats.projectsDone} />
                </span>
                <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/70 font-semibold relative z-10">Projects Done</span>
                <div className="absolute inset-0 opacity-40 mix-blend-overlay border border-white/5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent"></div>

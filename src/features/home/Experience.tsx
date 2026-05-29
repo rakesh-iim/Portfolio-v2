@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { experiences } from '@/data/portfolio';
 
 export function Experience() {
   return (
@@ -28,9 +29,9 @@ export function Experience() {
             <div className="absolute left-[13px] md:left-1/2 w-5 h-5 bg-surface rounded-full border-4 border-primary z-10 transform md:-translate-x-1/2 group-hover:scale-150 group-hover:bg-primary transition-all duration-300 shadow-[0_0_20px_rgba(173,198,255,0.8)]"></div>
             
             <div className="w-full md:w-1/2 pl-12 md:pl-0 md:pr-16 text-left md:text-right mb-6 md:mb-0">
-              <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold">2021 — Present</span>
-              <h3 className="font-display text-2xl md:text-[40px] font-bold text-white mt-2 leading-tight">Senior Software Engineer</h3>
-              <p className="text-white/70 mt-1">TechNova Solutions</p>
+              <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold">{experiences[0].period}</span>
+              <h3 className="font-display text-2xl md:text-[40px] font-bold text-white mt-2 leading-tight">{experiences[0].role}</h3>
+              <p className="text-white/70 mt-1">{experiences[0].company}</p>
             </div>
             
             <div className="w-full md:w-1/2 pl-12 md:pl-16">
@@ -39,9 +40,9 @@ export function Experience() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="glass-panel rounded-2xl p-6 md:p-8 transition-all duration-300 bg-surface-bright/30 border border-white/20 hover:shadow-[0_0_30px_rgba(173,198,255,0.25)] hover:border-white/30"
               >
-                <p className="text-white/90 mb-4 font-medium leading-relaxed">Architected and deployed scalable microservices using Go and gRPC, reducing latency by 40%. Led a team of 5 engineers in migrating legacy monolith to a Kubernetes-based infrastructure.</p>
+                <p className="text-white/90 mb-4 font-medium leading-relaxed">{experiences[0].summary}</p>
                 <div className="flex flex-wrap gap-2">
-                  {['Go', 'Kubernetes', 'AWS'].map(tech => (
+                  {experiences[0].technologies.map(tech => (
                     <span key={tech} className="px-3 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary font-mono text-[10px] uppercase font-bold tracking-wider">{tech}</span>
                   ))}
                 </div>
@@ -59,9 +60,9 @@ export function Experience() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="glass-panel rounded-2xl p-6 md:p-8 transition-all duration-300 bg-surface-bright/30 border border-white/20 hover:shadow-[0_0_30px_rgba(173,198,255,0.25)] hover:border-white/30"
               >
-                <p className="text-white/90 mb-4 font-medium leading-relaxed">Developed high-performance frontend interfaces using React and WebGL for data visualization dashboards used by Fortune 500 clients.</p>
+                <p className="text-white/90 mb-4 font-medium leading-relaxed">{experiences[1].summary}</p>
                 <div className="flex flex-wrap gap-2">
-                  {['React', 'WebGL', 'TypeScript'].map(tech => (
+                  {experiences[1].technologies.map(tech => (
                     <span key={tech} className="px-3 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary font-mono text-[10px] uppercase font-bold tracking-wider">{tech}</span>
                   ))}
                 </div>
@@ -69,9 +70,9 @@ export function Experience() {
             </div>
 
             <div className="w-full md:w-1/2 pl-12 md:pl-16 md:pr-0 text-left order-1 md:order-2">
-              <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold">2018 — 2021</span>
-              <h3 className="font-display text-2xl md:text-[40px] font-bold text-white mt-2 leading-tight">Frontend Engineer</h3>
-              <p className="text-white/70 mt-1">DataVizion Inc.</p>
+              <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold">{experiences[1].period}</span>
+              <h3 className="font-display text-2xl md:text-[40px] font-bold text-white mt-2 leading-tight">{experiences[1].role}</h3>
+              <p className="text-white/70 mt-1">{experiences[1].company}</p>
             </div>
           </div>
 

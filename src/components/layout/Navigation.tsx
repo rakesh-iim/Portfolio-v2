@@ -1,7 +1,8 @@
 import { motion } from 'motion/react';
 import { Home, Rocket, FileText, Mail, Download, Briefcase, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { downloadResume } from '../utils';
+import { personalInfo } from '@/data/portfolio';
+import { downloadResume } from '@/lib/resume';
 
 function ThemeToggleButton({ className }: { className?: string }) {
   const [isLight, setIsLight] = useState(false);
@@ -63,7 +64,7 @@ export function Navigation() {
     <>
       <nav className={`hidden md:flex fixed top-0 w-full z-50 transition-all duration-500 ease-out ${scrolled ? 'bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-primary/10' : 'bg-transparent'}`}>
         <div className="flex justify-between items-center px-10 py-6 w-full max-w-[1440px] mx-auto">
-          <div className="font-display text-2xl font-bold tracking-tighter text-white">RAKESH.KB</div>
+          <div className="font-display text-2xl font-bold tracking-tighter text-white">{personalInfo.brand}</div>
           <div className="flex items-center gap-8 font-mono text-xs uppercase tracking-[0.2em] font-medium">
             <a href="#about" className="text-primary font-bold border-b-2 border-primary pb-1">Work</a>
             <a href="#skills" className="text-white/70 hover:text-white transition-colors hover:bg-surface-bright/40 px-3 py-1.5 rounded-md">Skills</a>
@@ -85,7 +86,7 @@ export function Navigation() {
 
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 w-full z-40 bg-surface/80 backdrop-blur-xl border-b border-white/10 p-4 flex justify-between items-center">
-        <div className="font-display text-xl font-bold tracking-tighter text-white">RAKESH.KB</div>
+        <div className="font-display text-xl font-bold tracking-tighter text-white">{personalInfo.brand}</div>
         <ThemeToggleButton className="p-2" />
       </div>
 

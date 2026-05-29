@@ -1,10 +1,9 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { downloadResume } from '../utils';
-import { ParticleCanvas } from './ParticleCanvas';
-
-const phrases = ["Software Engineer", "Problem Solver", "Tech Innovator"];
+import { ParticleCanvas } from '@/components/effects/ParticleCanvas';
+import { heroPhrases, personalInfo } from '@/data/portfolio';
+import { downloadResume } from '@/lib/resume';
 
 export function Hero() {
   const [text, setText] = useState("");
@@ -22,8 +21,8 @@ export function Hero() {
 
   useEffect(() => {
     const ticker = setInterval(() => {
-      const i = loopNum % phrases.length;
-      const fullText = phrases[i];
+      const i = loopNum % heroPhrases.length;
+      const fullText = heroPhrases[i];
 
       setText(isDeleting 
         ? fullText.substring(0, text.length - 1) 
@@ -69,7 +68,7 @@ export function Hero() {
           transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.1 }}
           className="font-display text-5xl md:text-[80px] leading-[1.1] tracking-[-0.04em] text-white mb-6 max-w-4xl font-bold"
         >
-          Hi, I'm <br/><span className="text-gradient">Rakesh Kumar Behera</span>
+          Hi, I'm <br/><span className="text-gradient">{personalInfo.name}</span>
         </motion.h1>
 
         <motion.div 

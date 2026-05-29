@@ -159,6 +159,47 @@ body {
   border-top-color: var(--color-primary);
 }
 
+.skill-card {
+  --skill-accent: var(--color-primary);
+}
+
+.skill-card:hover {
+  box-shadow:
+    0 0 48px color-mix(in srgb, var(--skill-accent) 34%, transparent),
+    0 18px 40px rgba(0, 0, 0, 0.28);
+  border-color: color-mix(in srgb, var(--skill-accent) 34%, transparent);
+}
+
+.light .skill-card:hover {
+  box-shadow:
+    0 0 42px color-mix(in srgb, var(--skill-accent) 24%, transparent),
+    0 18px 36px rgba(25, 28, 36, 0.12);
+}
+
+.skill-card-primary {
+  --skill-accent: var(--color-primary);
+}
+
+.skill-card-secondary {
+  --skill-accent: var(--color-secondary);
+}
+
+.skill-card-tertiary {
+  --skill-accent: var(--color-tertiary);
+}
+
+.skill-icon {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.skill-card:hover .skill-icon {
+  box-shadow: 0 0 22px color-mix(in srgb, var(--skill-accent) 42%, transparent);
+}
+
+.skill-heading-accent {
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 28%, transparent);
+}
+
 .text-gradient {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   -webkit-background-clip: text;

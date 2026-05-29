@@ -81,7 +81,7 @@ export function SkillsShowcase() {
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.4, delay: idx * 0.04, ease: 'easeOut' }}
                 whileHover={{ y: -6 }}
-                className="group/tile relative"
+                className="group/tile relative hover:z-50"
                 style={{ ['--tile-accent' as string]: tech.color }}
               >
                 <div

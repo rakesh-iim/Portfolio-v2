@@ -72,7 +72,7 @@ const TechBadge: React.FC<{ name: string; colorClass: string }> = ({ name, color
 
   return (
     <motion.div
-      className="relative group/badge"
+      className="relative group/badge hover:z-50"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 17 }}
@@ -131,24 +131,26 @@ function SkillCard({ config, items }: { config: CategoryConfig; items: readonly 
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
       whileHover={{ y: -8 }}
       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-      className={`glass-panel skill-card ${config.cardClass} p-8 rounded-2xl group relative overflow-hidden border border-white/20 cursor-default transform-gpu`}
+      className={`glass-panel skill-card ${config.cardClass} rounded-2xl group relative hover:z-50 border border-white/20 cursor-default transform-gpu`}
     >
-      <motion.div
-        aria-hidden="true"
-        style={{ background: spotlight, opacity: hover ? 1 : 0 }}
-        transition={{ opacity: { duration: 0.35 } }}
-        className="absolute inset-0 pointer-events-none rounded-2xl mix-blend-screen"
-      />
+      <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+        <motion.div
+          aria-hidden="true"
+          style={{ background: spotlight, opacity: hover ? 1 : 0 }}
+          transition={{ opacity: { duration: 0.35 } }}
+          className="absolute inset-0 pointer-events-none mix-blend-screen"
+        />
 
-      <div
-        aria-hidden="true"
-        className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-2xl pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, color-mix(in srgb, var(--skill-accent) 22%, transparent), transparent 70%)' }}
-      />
+        <div
+          aria-hidden="true"
+          className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at center, color-mix(in srgb, var(--skill-accent) 22%, transparent), transparent 70%)' }}
+        />
 
-      <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      </div>
 
-      <div className="relative z-10" style={{ transform: 'translateZ(30px)' }}>
+      <div className="relative z-10 p-8" style={{ transform: 'translateZ(30px)' }}>
         <div className="relative mb-6 w-16 h-16">
           <motion.div
             aria-hidden="true"

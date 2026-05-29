@@ -1,14 +1,97 @@
-import { Mail, ArrowRight, Check } from 'lucide-react';
-import React, { useState } from 'react';
+import { Mail, ArrowRight, Check, Loader2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
+
+function AnimatedInput({ id, label, type = "text", required = false, isTextarea = false }: { id: string, label: string, type?: string, required?: boolean, isTextarea?: boolean }) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [value, setValue] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const isActive = isFocused || value.length > 0;
+
+  const inputClasses = "w-full bg-transparent border-0 border-b-2 border-transparent text-white focus:ring-0 focus:outline-none transition-colors py-4 px-0 relative z-10";
+
+  const handleTextareaInput = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    if (isTextarea) {
+      handleTextareaInput();
+    }
+  }, [value, isTextarea]);
+
+  return (
+    <div className="relative group mt-6">
+      {isTextarea ? (
+        <textarea
+          ref={textareaRef}
+          id={id}
+          required={required}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          rows={1}
+          className={`${inputClasses} resize-none overflow-hidden min-h-[56px]`}
+        />
+      ) : (
+        <input
+          type={type}
+          id={id}
+          required={required}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={inputClasses}
+        />
+      )}
+      {/* Base border */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/30 z-0"></div>
+      
+      {/* Animated glowing border */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary z-0 origin-center"
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ 
+          scaleX: isFocused ? 1 : 0, 
+          opacity: isFocused ? 1 : 0,
+          boxShadow: isFocused ? "0 0 10px 0 var(--color-primary)" : "0 0 0px 0 var(--color-primary)"
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      />
+      <motion.label
+        htmlFor={id}
+        initial={false}
+        animate={{
+          y: isActive ? -28 : 0,
+          scale: isActive ? 0.75 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        style={{ originX: 0, originY: 0.5 }}
+        className={`absolute left-0 top-4 pointer-events-none font-bold transition-colors duration-300 z-0 ${isFocused ? 'text-primary' : 'text-white/60'}`}
+      >
+        {label}
+      </motion.label>
+    </div>
+  );
+}
 
 export function Contact() {
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSent(true);
+      setTimeout(() => setSent(false), 3000);
+    }, 1500);
   };
 
   return (
@@ -50,31 +133,43 @@ export function Contact() {
            </div>
 
            <div className="w-full lg:w-1/2 mt-8 lg:mt-0">
-             <form onSubmit={handleSubmit} className="space-y-8">
-               <div className="relative group">
-                 <input type="text" id="name" required placeholder="Name" className="w-full bg-transparent border-0 border-b-2 border-white/30 text-white focus:ring-0 focus:border-primary focus:outline-none transition-colors py-4 px-0 peer placeholder-transparent" />
-                 <label htmlFor="name" className="absolute left-0 top-4 text-white/60 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-primary peer-focus:font-bold peer-valid:-top-4 peer-valid:text-xs peer-valid:text-white/60 pointer-events-none">Your Name</label>
-               </div>
+             <form onSubmit={handleSubmit} className="space-y-4">
+               <AnimatedInput id="name" label="Your Name" required />
+               <AnimatedInput id="email" label="Email Address" type="email" required />
+               <AnimatedInput id="message" label="Your Message" isTextarea required />
                
-               <div className="relative group">
-                 <input type="email" id="email" required placeholder="Email" className="w-full bg-transparent border-0 border-b-2 border-white/30 text-white focus:ring-0 focus:border-primary focus:outline-none transition-colors py-4 px-0 peer placeholder-transparent" />
-                 <label htmlFor="email" className="absolute left-0 top-4 text-white/60 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-primary peer-focus:font-bold peer-valid:-top-4 peer-valid:text-xs peer-valid:text-white/60 pointer-events-none">Email Address</label>
-               </div>
-               
-               <div className="relative group">
-                 <textarea id="message" required rows={4} placeholder="Message" className="w-full bg-transparent border-0 border-b-2 border-white/30 text-white focus:ring-0 focus:border-primary focus:outline-none transition-colors py-4 px-0 peer placeholder-transparent resize-none"></textarea>
-                 <label htmlFor="message" className="absolute left-0 top-4 text-white/60 transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-primary peer-focus:font-bold peer-valid:-top-4 peer-valid:text-xs peer-valid:text-white/60 pointer-events-none">Your Message</label>
-               </div>
-               
-               <button type="submit" disabled={sent} className={`relative overflow-hidden w-full md:w-auto px-12 py-5 rounded-full font-mono text-[10px] uppercase tracking-widest font-bold transition-all duration-300 group ${sent ? 'bg-secondary text-on-secondary' : 'bg-primary text-on-primary hover:bg-primary-fixed shadow-[0_0_20px_rgba(173,198,255,0.4)] hover:shadow-[0_0_30px_rgba(173,198,255,0.6)] hover:-translate-y-1'}`}>
-                 <span className="relative z-10 flex items-center justify-center gap-2">
-                   {sent ? (
-                     <>Sent! <Check size={18} /></>
-                   ) : (
-                     <>Send Message <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></>
-                   )}
-                 </span>
-               </button>
+              <div className="pt-4">
+                <button type="submit" disabled={isSubmitting || sent} className={`relative overflow-hidden w-full md:w-auto h-14 min-w-[200px] rounded-full font-mono text-[10px] uppercase tracking-widest font-bold transition-all duration-300 group ${sent ? 'bg-secondary text-on-secondary' : isSubmitting ? 'bg-surface-bright text-white/50 cursor-not-allowed' : 'bg-primary text-on-primary hover:bg-primary-fixed shadow-[0_0_20px_rgba(173,198,255,0.4)] hover:shadow-[0_0_30px_rgba(173,198,255,0.6)] hover:-translate-y-1'}`}>
+                  <span className="relative z-10 flex items-center justify-center w-full h-full">
+                    {isSubmitting ? (
+                      <motion.span 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center gap-2"
+                      >
+                        Sending <Loader2 size={18} className="animate-spin" />
+                      </motion.span>
+                    ) : sent ? (
+                      <motion.span 
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        className="flex items-center gap-2"
+                      >
+                        Sent! <Check size={18} />
+                      </motion.span>
+                    ) : (
+                      <motion.span 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center gap-2"
+                      >
+                        Send Message <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                      </motion.span>
+                    )}
+                  </span>
+                </button>
+              </div>
              </form>
            </div>
          </div>

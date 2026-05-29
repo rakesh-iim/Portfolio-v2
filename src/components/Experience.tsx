@@ -53,7 +53,7 @@ export function Experience() {
             {/* Dot */}
             <div className="absolute left-[13px] md:left-1/2 w-5 h-5 bg-surface rounded-full border-4 border-primary z-10 transform md:-translate-x-1/2 group-hover:scale-150 group-hover:bg-primary transition-all duration-300 shadow-[0_0_20px_rgba(173,198,255,0.8)]"></div>
             
-            <div className="w-full md:w-1/2 pl-12 md:pl-16 order-2 md:order-1 mt-6 md:mt-0">
+            <div className="w-full md:w-1/2 pl-12 md:pl-0 md:pr-16 order-2 md:order-1 mt-6 md:mt-0">
               <motion.div
                 whileHover={{ x: -10 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -68,7 +68,7 @@ export function Experience() {
               </motion.div>
             </div>
 
-            <div className="w-full md:w-1/2 pl-12 md:pl-0 md:pr-16 text-left order-1 md:order-2">
+            <div className="w-full md:w-1/2 pl-12 md:pl-16 md:pr-0 text-left order-1 md:order-2">
               <span className="font-mono text-xs uppercase tracking-widest text-primary font-bold">2018 — 2021</span>
               <h3 className="font-display text-2xl md:text-[40px] font-bold text-white mt-2 leading-tight">Frontend Engineer</h3>
               <p className="text-white/70 mt-1">DataVizion Inc.</p>

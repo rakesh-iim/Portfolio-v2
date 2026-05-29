@@ -1,5 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
+// Helper to convert hex to rgb string "r, g, b"
+function hexToRgb(hex: string) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? 
+    `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` 
+    : '173, 198, 255';
+}
+
 export function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -16,10 +24,21 @@ export function ParticleCanvas() {
     let particles: Particle[] = [];
     let mx = -1000;
     let my = -1000;
+    let primaryRgb = '173, 198, 255'; // default dark theme primary
+
+    const updateColor = () => {
+      // Get the current computed color from the root or body
+      const rootStyles = getComputedStyle(document.body);
+      let hex = rootStyles.getPropertyValue('--color-primary').trim();
+      if (hex) {
+        primaryRgb = hexToRgb(hex);
+      }
+    };
 
     const resize = () => {
       canvas.width = parent.clientWidth;
       canvas.height = parent.clientHeight;
+      updateColor();
       initParticles();
     };
 
@@ -68,7 +87,7 @@ export function ParticleCanvas() {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(173, 198, 255, 0.4)';
+        ctx.fillStyle = `rgba(${primaryRgb}, 0.5)`;
         ctx.fill();
       }
     }
@@ -92,6 +111,15 @@ export function ParticleCanvas() {
       my = -1000;
     };
 
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          updateColor();
+        }
+      });
+    });
+    observer.observe(document.documentElement, { attributes: true });
+
     window.addEventListener('resize', resize);
     parent.addEventListener('mousemove', handleMouseMove as EventListener);
     parent.addEventListener('mouseleave', handleMouseLeave);
@@ -109,7 +137,7 @@ export function ParticleCanvas() {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(173, 198, 255, ${0.15 * (1 - dist / 100)})`;
+            ctx.strokeStyle = `rgba(${primaryRgb}, ${0.2 * (1 - dist / 100)})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -125,6 +153,7 @@ export function ParticleCanvas() {
     animate();
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       parent.removeEventListener('mousemove', handleMouseMove as EventListener);
       parent.removeEventListener('mouseleave', handleMouseLeave);

@@ -121,6 +121,10 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-on-background);
@@ -136,12 +140,23 @@ body {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
 .bloom-hover {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .bloom-hover:hover {
   box-shadow: 0 0 40px rgba(173, 198, 255, 0.4);
   border-top-color: rgba(255, 255, 255, 0.4);
+}
+
+.light .bloom-hover:hover {
+  box-shadow: 0 0 40px rgba(0, 90, 193, 0.2);
+  border-top-color: var(--color-primary);
 }
 
 .text-gradient {
@@ -155,6 +170,14 @@ body {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+.hero-glow {
+  opacity: 0.3;
+}
+
+.light .hero-glow {
+  opacity: 0.6;
 }
 
 ::-webkit-scrollbar {

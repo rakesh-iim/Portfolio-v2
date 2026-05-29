@@ -36,7 +36,7 @@ export function CustomCursor() {
   return (
     <>
       <motion.div
-        className="fixed w-8 h-8 rounded-full border border-primary/80 pointer-events-none z-[10000] mix-blend-screen"
+        className="fixed w-8 h-8 rounded-full border border-primary/80 pointer-events-none z-[10000]"
         animate={{
           x: position.x - 16,
           y: position.y - 16,

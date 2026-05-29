@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { Brain } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { aboutStats, personalInfo } from '@/data/portfolio';
+import { DecodingText } from '@/components/ui/DecodingText';
 
 function Counter({ target, duration = 2000 }: { target: number, duration?: number }) {
   const [count, setCount] = useState(0);
@@ -46,7 +47,7 @@ export function About() {
           
           <div className="lg:col-span-7 flex flex-col justify-center">
             <h2 className="font-display text-3xl md:text-[40px] font-bold text-white mb-8 relative inline-block">
-              About Me
+              <DecodingText text="About Me" />
               <div className="absolute -bottom-2 left-0 w-1/3 h-1.5 bg-gradient-to-r from-primary to-transparent rounded-full shadow-[0_0_10px_rgba(173,198,255,0.5)]"></div>
             </h2>
             

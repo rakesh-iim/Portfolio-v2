@@ -5,6 +5,7 @@
 
 import { CustomCursor } from '@/components/effects/CustomCursor';
 import { NoiseOverlay } from '@/components/effects/NoiseOverlay';
+import { StarField } from '@/components/effects/StarField';
 import { Footer } from '@/components/layout/Footer';
 import { Navigation } from '@/components/layout/Navigation';
 import { ScrollProgress } from '@/components/layout/ScrollProgress';
@@ -16,20 +17,23 @@ import { Experience } from '@/features/home/Experience';
 import { Hero } from '@/features/home/Hero';
 import { Projects } from '@/features/projects/Projects';
 import { Skills } from '@/features/skills/Skills';
+import { SkillsShowcase } from '@/features/skills/SkillsShowcase';
 
 export default function App() {
   return (
-    <div className="bg-background text-on-background min-h-screen selection:bg-primary/30 selection:text-primary">
+    <div className="text-on-background min-h-screen selection:bg-primary/30 selection:text-primary">
+      <StarField />
       <NoiseOverlay />
       <CustomCursor />
       <ScrollToTop />
       <ScrollProgress />
       <SocialBar />
       <Navigation />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <About />
         <Skills />
+        <SkillsShowcase />
         <Experience />
         <Projects />
         <Contact />

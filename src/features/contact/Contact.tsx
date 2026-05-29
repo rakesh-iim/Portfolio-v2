@@ -2,6 +2,7 @@ import { Mail, ArrowRight, Check, Loader2 } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { contactInfo, socialLinks } from '@/data/portfolio';
+import { DecodingText } from '@/components/ui/DecodingText';
 
 function AnimatedInput({ id, label, type = "text", required = false, isTextarea = false }: { id: string, label: string, type?: string, required?: boolean, isTextarea?: boolean }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -111,7 +112,11 @@ export function Contact() {
 
          <div className="flex flex-col lg:flex-row gap-16 relative z-10">
            <div className="w-full lg:w-1/2">
-             <h2 className="font-display text-[48px] md:text-[80px] font-bold text-white mb-6 leading-[1.1] tracking-tight">Let's build<br/>the future.</h2>
+             <h2 className="font-display text-[48px] md:text-[80px] font-bold text-white mb-6 leading-[1.1] tracking-tight">
+               <DecodingText text="Let's build" />
+               <br/>
+               <DecodingText text="the future." delay={400} />
+             </h2>
              <p className="text-white/80 mb-12 max-w-md text-lg leading-relaxed">Currently open for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
              
              <div className="space-y-8">

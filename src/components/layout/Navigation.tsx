@@ -66,9 +66,10 @@ export function Navigation() {
         <div className="flex justify-between items-center px-10 py-6 w-full max-w-[1440px] mx-auto">
           <div className="font-display text-2xl font-bold tracking-tighter text-white">{personalInfo.brand}</div>
           <div className="flex items-center gap-8 font-mono text-xs uppercase tracking-[0.2em] font-medium">
-            <a href="#about" className="text-primary font-bold border-b-2 border-primary pb-1">Work</a>
+            <a href="#about" className="text-white/70 hover:text-white transition-colors hover:bg-surface-bright/40 px-3 py-1.5 rounded-md">About</a>
             <a href="#skills" className="text-white/70 hover:text-white transition-colors hover:bg-surface-bright/40 px-3 py-1.5 rounded-md">Skills</a>
             <a href="#experience" className="text-white/70 hover:text-white transition-colors hover:bg-surface-bright/40 px-3 py-1.5 rounded-md">Experience</a>
+            <a href="#projects" className="text-white/70 hover:text-white transition-colors hover:bg-surface-bright/40 px-3 py-1.5 rounded-md">Work</a>
             <a href="#contact" className="text-white/70 hover:text-white transition-colors hover:bg-surface-bright/40 px-3 py-1.5 rounded-md">Contact</a>
           </div>
           <div className="flex items-center gap-4">

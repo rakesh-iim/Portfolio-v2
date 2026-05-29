@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'motion/react';
 import { projects } from '@/data/projects';
+import { DecodingText } from '@/components/ui/DecodingText';
 
 const TiltCard: React.FC<{ children: React.ReactNode, bgImage: string, techList?: string[], onClick?: () => void }> = ({ children, bgImage, techList, onClick }) => {
   const x = useMotionValue(0);
@@ -79,7 +80,7 @@ export function Projects() {
 
        <div className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-8">
         <div>
-          <h2 className="font-display text-4xl md:text-[80px] font-bold text-white mb-4 leading-none tracking-[-0.04em]">Selected Work.</h2>
+          <h2 className="font-display text-4xl md:text-[80px] font-bold text-white mb-4 leading-none tracking-[-0.04em]"><DecodingText text="Selected Work." /></h2>
           <p className="text-white/80 max-w-xl text-lg">A curated selection of projects demonstrating technical depth and design sensibility.</p>
         </div>
         

@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ParticleCanvas } from '@/components/effects/ParticleCanvas';
+import { DecodingText } from '@/components/ui/DecodingText';
 import { heroPhrases, personalInfo } from '@/data/portfolio';
 import { downloadResume } from '@/lib/resume';
 
@@ -68,7 +69,7 @@ export function Hero() {
           transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.1 }}
           className="font-display text-5xl md:text-[80px] leading-[1.1] tracking-[-0.04em] text-white mb-6 max-w-4xl font-bold"
         >
-          Hi, I'm <br/><span className="text-gradient">{personalInfo.name}</span>
+          Hi, I'm <br/><DecodingText text={personalInfo.name} className="text-gradient" duration={1100} delay={300} />
         </motion.h1>
 
         <motion.div 

@@ -32,7 +32,14 @@ function Counter({ target, duration = 2000 }: { target: number, duration?: numbe
 
 export function About() {
   return (
-    <section id="about" className="relative py-32 px-6 md:px-20 bg-gradient-to-b from-transparent to-surface-container-low/40">
+    <motion.section 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ type: "spring", stiffness: 60, damping: 20 }}
+      id="about" 
+      className="relative py-32 px-6 md:px-20 bg-gradient-to-b from-transparent to-surface-container-low/40"
+    >
       <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-8">
           
@@ -83,6 +90,6 @@ export function About() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

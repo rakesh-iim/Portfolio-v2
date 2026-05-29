@@ -14,6 +14,8 @@ import { Footer } from './components/Footer';
 import { NoiseOverlay } from './components/NoiseOverlay';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollToTop } from './components/ScrollToTop';
+import { ScrollProgress } from './components/ScrollProgress';
+import { SocialBar } from './components/SocialBar';
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
       <NoiseOverlay />
       <CustomCursor />
       <ScrollToTop />
+      <ScrollProgress />
+      <SocialBar />
       <Navigation />
       <main>
         <Hero />

@@ -1,5 +1,6 @@
 import { Mail, ArrowRight, Check } from 'lucide-react';
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 
 export function Contact() {
   const [sent, setSent] = useState(false);
@@ -11,7 +12,14 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="max-w-[1440px] mx-auto px-6 md:px-20 mb-[120px] pt-16">
+    <motion.section 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ type: "spring", stiffness: 60, damping: 20 }}
+      id="contact" 
+      className="max-w-[1440px] mx-auto px-6 md:px-20 mb-[120px] pt-16"
+    >
        <div className="glass-panel rounded-[32px] p-8 md:p-16 relative overflow-hidden bg-surface-container-high/40 border border-white/20">
          
          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
@@ -71,6 +79,6 @@ export function Contact() {
            </div>
          </div>
        </div>
-    </section>
+    </motion.section>
   );
 }

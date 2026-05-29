@@ -4,7 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { projects } from '@/data/projects';
 import { DecodingText } from '@/components/ui/DecodingText';
 
-const TiltCard: React.FC<{ children: React.ReactNode, bgImage: string, techList?: string[], onClick?: () => void }> = ({ children, bgImage, techList, onClick }) => {
+const TiltCard: React.FC<{ children: React.ReactNode, bgImage: string, techList?: readonly string[], onClick?: () => void }> = ({ children, bgImage, techList, onClick }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -63,7 +63,7 @@ const TiltCard: React.FC<{ children: React.ReactNode, bgImage: string, techList?
 }
 
 export function Projects() {
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [selectedProject, setSelectedProject] = useState<typeof projects[number] | null>(null);
 
   return (
     <motion.section 

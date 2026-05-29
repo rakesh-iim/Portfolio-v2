@@ -1,5 +1,5 @@
-import { motion } from 'motion/react';
-import React from 'react';
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'motion/react';
+import React, { useState } from 'react';
 import { Terminal, Server, Cloud, type LucideIcon } from 'lucide-react';
 import {
   SiReact,
@@ -94,6 +94,100 @@ const TechBadge: React.FC<{ name: string; colorClass: string }> = ({ name, color
   );
 };
 
+type CategoryConfig = (typeof categoryConfig)[CategoryKey];
+
+function SkillCard({ config, items }: { config: CategoryConfig; items: readonly string[] }) {
+  const Icon = config.icon;
+  const [hover, setHover] = useState(false);
+
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const sx = useSpring(mx, { stiffness: 180, damping: 22, mass: 0.4 });
+  const sy = useSpring(my, { stiffness: 180, damping: 22, mass: 0.4 });
+
+  const rotateY = useTransform(sx, [0, 1], [-6, 6]);
+  const rotateX = useTransform(sy, [0, 1], [5, -5]);
+  const spotX = useTransform(sx, (v) => `${v * 100}%`);
+  const spotY = useTransform(sy, (v) => `${v * 100}%`);
+  const spotlight = useMotionTemplate`radial-gradient(circle 260px at ${spotX} ${spotY}, color-mix(in srgb, var(--skill-accent) 32%, transparent), transparent 65%)`;
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width);
+    my.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handleLeave = () => {
+    setHover(false);
+    mx.set(0.5);
+    my.set(0.5);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMove}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={handleLeave}
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+      whileHover={{ y: -8 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      className={`glass-panel skill-card ${config.cardClass} p-8 rounded-2xl group relative overflow-hidden border border-white/20 cursor-default transform-gpu`}
+    >
+      <motion.div
+        aria-hidden="true"
+        style={{ background: spotlight, opacity: hover ? 1 : 0 }}
+        transition={{ opacity: { duration: 0.35 } }}
+        className="absolute inset-0 pointer-events-none rounded-2xl mix-blend-screen"
+      />
+
+      <div
+        aria-hidden="true"
+        className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-2xl pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, color-mix(in srgb, var(--skill-accent) 22%, transparent), transparent 70%)' }}
+      />
+
+      <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="relative z-10" style={{ transform: 'translateZ(30px)' }}>
+        <div className="relative mb-6 w-16 h-16">
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--skill-accent) 55%, transparent), transparent 65%)' }}
+            initial={false}
+            animate={{ scale: hover ? 1.7 : 0.8, opacity: hover ? 1 : 0 }}
+            transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+          />
+          <motion.div
+            className="relative skill-icon w-16 h-16 rounded-full bg-surface-container flex items-center justify-center border border-white/15 transition-colors duration-300"
+            animate={{
+              rotate: hover ? -10 : 0,
+              scale: hover ? 1.1 : 1,
+              borderColor: hover ? 'color-mix(in srgb, var(--skill-accent) 70%, transparent)' : 'rgba(255,255,255,0.15)',
+            }}
+            transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+          >
+            <Icon className={`text-white/80 ${config.iconColor} transition-all duration-300`} size={32} />
+          </motion.div>
+        </div>
+
+        <h3 className="font-display text-2xl font-bold text-white mb-4">{config.title}</h3>
+        <div className="flex flex-wrap gap-2">
+          {items.map((tech, i) => (
+            <motion.div
+              key={tech}
+              animate={hover ? { y: [0, -3, 0] } : { y: 0 }}
+              transition={{ duration: 0.5, delay: hover ? i * 0.05 : 0, ease: 'easeOut' }}
+            >
+              <TechBadge name={tech} colorClass={config.badgeClass} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function Skills() {
   return (
     <motion.section
@@ -114,31 +208,11 @@ export function Skills() {
         </p>
       </div>
 
-      <div className="max-w-[1440px] mx-auto">
+      <div className="max-w-[1440px] mx-auto" style={{ perspective: 1400 }}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {(Object.entries(skillCategories) as [CategoryKey, readonly string[]][]).map(([key, items]) => {
-            const config = categoryConfig[key];
-            const Icon = config.icon;
-            return (
-              <div
-                key={key}
-                className={`glass-panel skill-card ${config.cardClass} p-8 rounded-2xl group hover:-translate-y-2 transition-all duration-500 relative overflow-hidden border border-white/20`}
-              >
-                <div className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-md" style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--skill-accent) 30%, transparent), transparent)' }}></div>
-                <div className="relative z-10">
-                  <div className="skill-icon w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-6 border border-white/15 transition-colors">
-                    <Icon className={`text-white/80 ${config.iconColor} transition-all duration-300`} size={32} />
-                  </div>
-                  <h3 className="font-display text-2xl font-bold text-white mb-4">{config.title}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {items.map((tech) => (
-                      <TechBadge key={tech} name={tech} colorClass={config.badgeClass} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {(Object.entries(skillCategories) as [CategoryKey, readonly string[]][]).map(([key, items]) => (
+            <SkillCard key={key} config={categoryConfig[key]} items={items} />
+          ))}
         </div>
       </div>
     </motion.section>

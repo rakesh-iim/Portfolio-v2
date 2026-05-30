@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 
 const sections = [
@@ -14,32 +14,54 @@ export function ScrollProgress() {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Use middle of screen for scroll detection
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
+    let ticking = false;
+    let cached: { id: string; top: number; bottom: number }[] = [];
 
-      let current = 'home';
-      for (const section of sections) {
-        const element = document.getElementById(section.id);
-        if (element) {
-          const { top, bottom } = element.getBoundingClientRect();
-          const absoluteTop = top + window.scrollY;
-          const absoluteBottom = bottom + window.scrollY;
-
-          // If the scroll position is within the element's absolute boundaries
-          if (scrollPosition >= absoluteTop && scrollPosition <= absoluteBottom) {
-            current = section.id;
-          }
-        }
-      }
-      setActiveSection(current);
+    const measure = () => {
+      cached = sections
+        .map((s) => {
+          const el = document.getElementById(s.id);
+          if (!el) return null;
+          const rect = el.getBoundingClientRect();
+          const top = rect.top + window.scrollY;
+          return { id: s.id, top, bottom: top + rect.height };
+        })
+        .filter((x): x is { id: string; top: number; bottom: number } => x !== null);
     };
 
+    const update = () => {
+      ticking = false;
+      const pos = window.scrollY + window.innerHeight / 3;
+      let current = cached[0]?.id ?? 'home';
+      for (const s of cached) {
+        if (pos >= s.top && pos <= s.bottom) {
+          current = s.id;
+          break;
+        }
+      }
+      setActiveSection((prev) => (prev === current ? prev : current));
+    };
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    const handleResize = () => {
+      measure();
+      handleScroll();
+    };
+
+    measure();
+    update();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check
-    handleScroll();
-    
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (

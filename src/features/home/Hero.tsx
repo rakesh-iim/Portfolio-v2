@@ -7,10 +7,7 @@ import { heroPhrases, personalInfo } from '@/data/portfolio';
 import { downloadResume } from '@/lib/resume';
 
 export function Hero() {
-  const [text, setText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
-  const [typingSpeed, setTypingSpeed] = useState(100);
+  const [text, setText] = useState('');
   const [greeting, setGreeting] = useState('Welcome to my space');
 
   useEffect(() => {
@@ -21,29 +18,38 @@ export function Hero() {
   }, []);
 
   useEffect(() => {
-    const ticker = setInterval(() => {
-      const i = loopNum % heroPhrases.length;
-      const fullText = heroPhrases[i];
+    let loop = 0;
+    let isDeleting = false;
+    let current = '';
+    let timer: ReturnType<typeof setTimeout>;
+    let cancelled = false;
 
-      setText(isDeleting 
-        ? fullText.substring(0, text.length - 1) 
-        : fullText.substring(0, text.length + 1)
-      );
+    const step = () => {
+      if (cancelled) return;
+      const phrase = heroPhrases[loop % heroPhrases.length];
+      current = isDeleting
+        ? phrase.substring(0, current.length - 1)
+        : phrase.substring(0, current.length + 1);
+      setText(current);
 
-      setTypingSpeed(isDeleting ? 50 : 100);
-
-      if (!isDeleting && text === fullText) {
-        setIsDeleting(true);
-        setTypingSpeed(2000); // Pause at end
-      } else if (isDeleting && text === '') {
-        setIsDeleting(false);
-        setLoopNum(loopNum + 1);
-        setTypingSpeed(500); // Pause before next word
+      let delay = isDeleting ? 50 : 100;
+      if (!isDeleting && current === phrase) {
+        isDeleting = true;
+        delay = 2000;
+      } else if (isDeleting && current === '') {
+        isDeleting = false;
+        loop++;
+        delay = 500;
       }
-    }, typingSpeed);
+      timer = setTimeout(step, delay);
+    };
 
-    return () => clearInterval(ticker);
-  }, [text, isDeleting, loopNum, typingSpeed]);
+    timer = setTimeout(step, 100);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 md:px-20 pt-24 md:pt-0">

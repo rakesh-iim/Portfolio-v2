@@ -31,6 +31,7 @@ export function StarField() {
     let starColor = '255, 255, 255';
     let raf = 0;
     let scrollY = window.scrollY;
+    let running = true;
 
     const readStarColor = () => {
       const isLight = document.documentElement.classList.contains('light');
@@ -73,6 +74,10 @@ export function StarField() {
     };
 
     const draw = (t: number) => {
+      if (!running) {
+        raf = 0;
+        return;
+      }
       const w = window.innerWidth;
       const h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
@@ -99,6 +104,11 @@ export function StarField() {
       raf = requestAnimationFrame(draw);
     };
 
+    const onVisibility = () => {
+      running = document.visibilityState === 'visible';
+      if (running && !raf) raf = requestAnimationFrame(draw);
+    };
+
     const observer = new MutationObserver(() => readStarColor());
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
@@ -106,12 +116,14 @@ export function StarField() {
     resize();
     window.addEventListener('resize', resize);
     window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('visibilitychange', onVisibility);
     raf = requestAnimationFrame(draw);
 
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('visibilitychange', onVisibility);
       cancelAnimationFrame(raf);
     };
   }, []);

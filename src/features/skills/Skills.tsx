@@ -1,5 +1,5 @@
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'motion/react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Terminal, Server, Cloud, type LucideIcon } from 'lucide-react';
 import {
   SiReact,
@@ -111,14 +111,29 @@ function SkillCard({ config, items }: { config: CategoryConfig; items: readonly 
   const spotY = useTransform(sy, (v) => `${v * 100}%`);
   const spotlight = useMotionTemplate`radial-gradient(circle 260px at ${spotX} ${spotY}, color-mix(in srgb, var(--skill-accent) 32%, transparent), transparent 65%)`;
 
+  const rafRef = useRef(0);
+  const pendingRef = useRef<{ x: number; y: number } | null>(null);
+
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
+    pendingRef.current = {
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    };
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      const p = pendingRef.current;
+      if (!p) return;
+      mx.set(p.x);
+      my.set(p.y);
+    });
   };
 
   const handleLeave = () => {
     setHover(false);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = 0;
     mx.set(0.5);
     my.set(0.5);
   };
